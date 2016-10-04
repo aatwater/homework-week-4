@@ -1,0 +1,25 @@
+---
+title: "Poisson Mod 8"
+author: "Amy Atwater"
+date: "October 4, 2016"
+output: html_document
+---
+
+```{r}
+ ### homework problem 1
+### a) 
+1-ppois(q = 8, lambda = 15)
+### b)
+dpois(x = 0, lambda = 15)
+### c)
+dpois(x = 3, lambda = 15)
+### d)
+x <- 0:30
+l = 15
+probset <- dpois(x = x, lambda = l)
+barplot(probset, names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probability Mass Function")
+### e)
+Master <- rpois(n = 104, 15)
+### f)
+hist(Master, xlim = c(0,30))
+### the shape of the histogram is very similar to that of the Probability Mass Function, with only a slight skew to the left, not seen in the P. mass function plot, which is symmetrical ###
