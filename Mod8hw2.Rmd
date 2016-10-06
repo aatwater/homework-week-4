@@ -1,0 +1,294 @@
+---
+title: "Homework 2"
+author: "Amy Atwater"
+date: "October 5, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Homework 2, Module 8 ###
+
+```{r}
+f <- file.choose()
+d <- read.csv(f, sep=",", header = TRUE)
+head(d)
+summary(d)
+
+### 1. ###
+
+height = d$height
+mean(height)
+x<-d$height
+stdv<- function(x){sqrt(sum((x - mean(x))^2)/length(x))}
+### Had to make a function to calculate population standard deviations, as the built in sd() function is for sample populations, and divides the numerator by the incorrect value. x-1 instead of just x. ###
+stdv(x)
+
+weight = d$weight
+mean(weight)
+stdv(weight)
+
+age = d$age
+mean(age)
+stdv(age)
+
+zom = d$zombies_killed
+mean(zom)
+stdv(zom)
+
+edu = d$years_of_education
+mean(edu)
+stdv(edu)
+
+### 2. ###
+
+boxplot(height ~ gender, d)
+library(ggplot2)
+p <- ggplot(data = d, aes(x = gender, y = height))
+p <- p + geom_boxplot()
+p <- p + theme(axis.text.x = element_text(angle = 90))
+p
+
+boxplot(weight ~ gender, d)
+p <- ggplot(data = d, aes(x = gender, y = weight))
+p <- p + geom_boxplot()
+p <- p + theme(axis.text.x = element_text(angle = 90))
+p
+
+boxplot(age ~ gender, d)
+p <- ggplot(data = d, aes(x = gender, y = age))
+p <- p + geom_boxplot()
+p <- p + theme(axis.text.x = element_text(angle = 90))
+p
+
+boxplot(zom ~ gender, d)
+p <- ggplot(data = d, aes(x = gender, y = zom))
+p <- p + geom_boxplot()
+p <- p + theme(axis.text.x = element_text(angle = 90))
+p <- p + ylab("Number of Zombies Killed")
+p
+
+boxplot(edu~ gender, d)
+p <- ggplot(data = d, aes(x = gender, y = edu))
+p <- p + geom_boxplot()
+p <- p + theme(axis.text.x = element_text(angle = 90))
+p <- p + ylab("Years of Education")
+p
+
+### 3. ###
+
+p <- ggplot(data = d, aes(x = age, y = height, color = factor(gender)))
+p <- p + xlab("Age") + ylab("Height")
+p <- p + geom_point()
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p
+
+p <- ggplot(data = d, aes(x = age, y = weight, color = factor(gender)))
+p <- p + xlab("Age") + ylab("Weight")
+p <- p + geom_point()
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p
+
+### there seems to be more of a relationship between height and age than there is between weight and age. There is a positive trend in both plots, greater heights and weights seen in the older ages. This is only really realistic when you realize the upper limit of age is 30. ### 
+
+### 4. ###
+
+hist(x, freq = FALSE, col = "purple", main = "Plot 1", xlab = "Height", ylab = "Frequency", ylim = c(0, 0.15))
+
+qqnorm(x, main = "Height QQ plot")
+qqline(x, col = "gold")
+
+hist(weight, freq = FALSE, col = "red", main = "Plot 1", xlab = "Weight", ylab = "Frequency", ylim = c(0, 0.04))
+
+qqnorm(weight, main = "Weight QQ plot")
+qqline(weight, col = "purple")
+
+hist(age, freq = FALSE, col = "green", main = "Plot 1", xlab = "Age", ylab = "Frequency", ylim = c(0, 0.15))
+
+qqnorm(age, main = "Age QQ plot")
+qqline(age, col = "hot pink")
+
+hist(zom, freq = FALSE, col = "gold", main = "Plot 1", xlab = "Zombies Killed", ylab = "Frequency", ylim = c(0, 0.27))
+
+qqnorm(zom, main = "Zombies Killed QQ plot")
+qqline(zom, col = "blue")
+
+hist(edu, freq = FALSE, col = "blue", main = "Plot 1", xlab = "Years of Education", ylab = "Frequency", ylim = c(0, 0.25))
+
+qqnorm(x, main = "Years of Education QQ plot")
+qqline(x, col = "brown")
+
+### The normally distributed variables include height, weight and age. Number of zombies killed and years of education do not show a normal distribution. They appear to be more of a Poisson distribution, as they are skewed to one side, with a much longer tail on the other side. ###
+
+### 5 ###
+s <- sample(d, size = 30, replace = TRUE)
+subset <- d[sample(1: nrow(d), 30, replace, FALSE
+
+mysample <- d[sample(1:nrow(d),30,replace=FALSE),]
+mysample
+
+height = mysample$height
+sd(height)
+mh <- mean(height)
+var(height)
+### standard error ###
+sem <- sd(height)/sqrt(length(height))
+sem
+sd(height)/sqrt(length(height))
+SE1 <- function(x) {sqrt(var(x)/length(x))}
+SE1(height)
+
+lower <- mh - qnorm(1 - 0.05/2) * sem
+upper <- mh + qnorm(1 - 0.05/2) * sem
+ci <- c(lower, upper)
+ci
+
+
+weight = mysample$weight
+sd(weight)
+mean(weight)
+var(weight)
+### standard error ###
+sd(weight)/sqrt(30)
+SE1(weight)
+sem2 <- sd(weight)/sqrt(length(weight))
+lower <- mh - qnorm(1 - 0.05/2) * sem2
+upper <- mh + qnorm(1 - 0.05/2) * sem2
+ci <- c(lower, upper)
+ci
+
+age = mysample$age
+sd(age)
+mean(age)
+### standard error ###
+SE1(age)
+sem3 <- sd(age)/sqrt(length(age))
+lower <- mh - qnorm(1 - 0.05/2) * sem3
+upper <- mh + qnorm(1 - 0.05/2) * sem3
+ci <- c(lower, upper)
+ci
+
+zom = mysample$zombies_killed
+mean(zom)
+sd(zom)
+### standard error ###
+SE1(zom)
+
+### calculating confidence intervals by bootstrapping as it does not presume the underlying distribution from which the random variable is drawn ###
+set <- NULL
+n <- 15
+for (i in 1:10000) {set[i] <- mean(sample(zom, n, replace = TRUE))}
+quantile(set)
+quantile(set, c(0.05, 0.95))
+
+edu = mysample$years_of_education
+mean(edu)
+sd(edu)
+### standard error ###
+SE1(edu)
+### calculating confidence intervals by bootstrapping ###
+set <- NULL
+n <- 15
+for (i in 1:10000) {set[i] <- mean(sample(edu, n, replace = TRUE))}
+quantile(set)
+quantile(set, c(0.05, 0.95))
+
+
+### 6. ###
+
+k <- 99
+n <- 30
+s <- NULL
+for (i in 1:k) s[[i]] <-d[sample(1:nrow(d),30,replace=FALSE),]
+
+### height
+
+m <- NULL
+
+for (i in 1:k) {m[i] <- mean(s[[i]]$height)}
+mean(m)
+h_mean<-c(m,mean(mysample$height))
+h_mean
+
+stdev <- NULL
+for(i in 1:k){stdev[i]<-sd(s[[i]]$height)}
+
+h_sd<-c(stdev,sd(mysample$height))
+qqnorm(h_sd)
+hist(h_mean)
+mean(h_mean)
+sd(h_sd)
+
+### weight ###
+w <- NULL
+
+for (i in 1:k) {w[i] <- mean(s[[i]]$height)}
+mean(w)
+w_mean<-c(w,mean(mysample$weight))
+w_mean
+
+stdev <- NULL
+for(i in 1:k){stdev[i]<-sd(s[[i]]$weight)}
+
+w_sd<-c(stdev,sd(mysample$weight))
+qqnorm(w_sd)
+hist(w_mean)
+mean(w_mean)
+sd(w_sd)
+
+### Age ###
+a <- NULL
+
+for (i in 1:k) {a[i] <- mean(s[[i]]$age)}
+mean(a)
+a_mean<-c(a,mean(mysample$age))
+a_mean
+
+stdev <- NULL
+for(i in 1:k){stdev[i]<-sd(s[[i]]$height)}
+
+a_sd<-c(stdev,sd(mysample$age))
+qqnorm(a_sd)
+hist(a_mean)
+mean(a_mean)
+sd(a_sd)
+
+
+### Zombies Killed ###
+z <- NULL
+
+for (i in 1:k) {z[i] <- mean(s[[i]]$zom)}
+mean(z)
+z_mean<-c(z,mean(mysample$zom))
+z_mean
+
+stdev <- NULL
+for(i in 1:k){stdev[i]<-sd(s[[i]]$height)}
+
+z_sd<-c(stdev,sd(mysample$zom))
+qqnorm(z_sd)
+hist(z_mean)
+mean(z_mean)
+sd(z_sd)
+
+### Years of Education ###
+e <- NULL
+
+for (i in 1:k) {e[i] <- mean(s[[i]]$edu)}
+mean(e)
+e_mean<-c(e,mean(mysample$edu))
+e_mean
+
+stdev <- NULL
+for(i in 1:k){stdev[i]<-sd(s[[i]]$height)}
+
+e_sd<-c(stdev,sd(mysample$edu))
+qqnorm(e_sd)
+hist(e_mean)
+mean(e_mean)
+sd(e_sd)
+
+#### The standard deviations calculated in part 9 are less than the standard error values calculated in part 5, greater sampling reduces the amount of deviation. The distributions of all the variables now look normally distributed, even zombies killed and years of education, which previously seemed skewed. Repeated sampling allows for a more normal distribution of data. ###
+
